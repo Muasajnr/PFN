@@ -198,6 +198,18 @@ body {
 
 .box-primary {
     border-top-color: #22a1f9;
+    width:100%;
+}
+.table-responsive {
+    overflow-x: auto;
+}
+.table thead th {
+    white-space: nowrap;
+}
+.search-bar {
+    margin-bottom: 15px;
+    width:20%;
+    margin-left: auto;
 }
 
 /*------------------------------------------------------------------
