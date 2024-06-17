@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Others | Paul's Furnitures Ngong Road</title>
+    <title>Dinning | Paul's Furnitures Ngong Road</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -45,7 +45,7 @@
         <!-- Navbar Start -->
         <div class="container-fluid nav-bar bg-transparent">
             <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
-                <a href="index.html" class="navbar-brand d-flex align-items-center text-center">
+                <a href="index.php" class="navbar-brand d-flex align-items-center text-center">
                     <div class="icon  p-1 me-2">
                         <img class="img-fluid" src="img/Asset 8.png" alt="Icon" style="width: 60px; height: 60px;">
                      </div>
@@ -56,12 +56,12 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto">
-                        <a href="index.html" class="nav-item nav-link active">Home</a>
-                        <a href="livingroom.html" class="nav-item nav-link">Living Room</a>
-                        <a href="dining.html" class="nav-item nav-link">Dinning</a>
-                        <a href="bedroom.html" class="nav-item nav-link">Bedroom</a>
-                        <a href="fabrics.html" class="nav-item nav-link">Fabrics</a>
-                        <a href="others.html" class="nav-item nav-link">Others</a>
+                        <a href="index.php" class="nav-item nav-link active">Home</a>
+                        <a href="livingroom.php" class="nav-item nav-link">Living Room</a>
+                        <a href="dining.php" class="nav-item nav-link">Dinning</a>
+                        <a href="bedroom.php" class="nav-item nav-link">Bedroom</a>
+                        <a href="fabrics.php" class="nav-item nav-link">Fabrics</a>
+                        <a href="others.php" class="nav-item nav-link">Others</a>
                         
                     </div>
                     <a href="" class="btn btn-primary px-3 d-none d-lg-flex"> <i class="bi bi-suit-heart-fill"></i> &nbsp; Wishlist </a>

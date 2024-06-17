@@ -11,7 +11,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Wishlist | Paul's Furnitures</title>
+    <title>Products | Paul's Furnitures</title>
     <link href="assets/vendor/fontawesome/css/fontawesome.min.css" rel="stylesheet">
     <link href="assets/vendor/fontawesome/css/solid.min.css" rel="stylesheet">
     <link href="assets/vendor/fontawesome/css/brands.min.css" rel="stylesheet">
@@ -30,19 +30,19 @@
             </div>
             <ul class="list-unstyled components text-secondary">
                 <li>
-                    <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a href="wishlist.html"><i class="fas fa-heart"></i> Wishlist</a>
+                    <a href="wishlist.php"><i class="fas fa-heart"></i> Wishlist</a>
                 </li>
                 <li>
-                    <a href="products.html"><i class="fas fa-table"></i> Products</a>
+                    <a href="products.php"><i class="fas fa-table"></i> Products</a>
                 </li>
                 <li>
-                    <a href="visitors.html"><i class="fas fa-chart-bar"></i> Visitors</a>
+                    <a href="visitors.php"><i class="fas fa-chart-bar"></i> Visitors</a>
                 </li>
                 <li>
-                    <a href="addproduct.html" style="color:red;"><i class="fa fa-plus"></i> ADD PRODUCT</a>
+                    <a href="addproduct.php" style="color:red;"><i class="fa fa-plus"></i> ADD PRODUCT</a>
                 </li>
                 
                 
@@ -86,7 +86,7 @@
                                         <li><a href="" class="dropdown-item"><i class="fas fa-envelope"></i> Messages</a></li>
                                         <li><a href="" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a></li>
                                         <div class="dropdown-divider"></div>
-                                        <li><a href="index.html" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                                        <li><a href="index.php" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -98,7 +98,9 @@
             <div class="content">
                 <div class="container">
                     <div class="page-title">
-                        <h3>All Wishlists</h3>
+                        <h3>All Poducts
+                            <a href="addproduct.php" class="btn btn-sm btn-outline-primary float-end"><i class="fas fa-plus"> </i>  Add</a>
+                        </h3>
                     </div>
                     <div class="box box-primary">
                         <div class="box-body">
@@ -114,9 +116,8 @@
                                             <th>Images</th>
                                             <th>Description</th>
                                             <th>Price</th>
-                                            <th>Client</th>
-                                            <th>Comment</th>
-                                            <th>Time</th>
+                                            <th>Category</th>
+                                            <th>Upload Time</th>
                                             
                                         </tr>
                                     </thead>
@@ -129,7 +130,7 @@
                                             <td>Active</td>
                                             <td>Active</td>
                                             <td>Active</td>
-                                            <td>Active</td>
+                                            
                                             <td class="text-end">
                                                 <a href="" class="btn btn-outline-info btn-rounded"><i class="fas fa-pen"></i></a>
                                                 <a href="" class="btn btn-outline-danger btn-rounded"><i class="fas fa-trash"></i></a>

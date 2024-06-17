@@ -1,10 +1,5 @@
 <!doctype html>
-<!-- 
-* Bootstrap Simple Admin Template
-* Version: 2.1
-* Author: Alexis Luna
-* Website: https://github.com/alexis-luna/bootstrap-simple-admin-template
--->
+
 <html lang="en">
 
 <head>
@@ -29,19 +24,19 @@
             </div>
             <ul class="list-unstyled components text-secondary">
                 <li>
-                    <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a href="wishlist.html"><i class="fas fa-heart"></i> Wishlist</a>
+                    <a href="wishlist.php"><i class="fas fa-heart"></i> Wishlist</a>
                 </li>
                 <li>
-                    <a href="products.html"><i class="fas fa-table"></i> Products</a>
+                    <a href="products.php"><i class="fas fa-table"></i> Products</a>
                 </li>
                 <li>
-                    <a href="visitors.html"><i class="fas fa-chart-bar"></i> Visitors</a>
+                    <a href="visitors.php"><i class="fas fa-chart-bar"></i> Visitors</a>
                 </li>
                 <li>
-                    <a href="addproduct.html" style="color:red;"><i class="fa fa-plus"></i> ADD PRODUCT</a>
+                    <a href="addproduct.php" style="color:red;"><i class="fa fa-plus"></i> ADD PRODUCT</a>
                 </li>
                 
                 
@@ -84,7 +79,7 @@
                                         <li><a href="" class="dropdown-item"><i class="fas fa-envelope"></i> Messages</a></li>
                                         <li><a href="" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a></li>
                                         <div class="dropdown-divider"></div>
-                                        <li><a href="index.html" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                                        <li><a href="index.php" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                                     </ul>
                                 </div>
                             </div>

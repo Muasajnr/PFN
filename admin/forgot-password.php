@@ -33,7 +33,7 @@
                         </div>
                         <button class="btn btn-primary shadow-2 mb-4">Send me new password</button>
                     </form>
-                    <p class="mb-0 text-muted">Don’t have an account? <a href="signup.html">Sign up</a></p>
+                    <p class="mb-0 text-muted">Don’t have an account? <a href="signup.php">Sign up</a></p>
                 </div>
             </div>
         </div>
