@@ -1,3 +1,33 @@
+<?php
+include 'db_connection.php';
+
+// Query to count total wishlist
+$sqlWishlistCount = "SELECT COUNT(*) AS wishlist_count FROM wishlist";
+$resultWishlistCount = $conn->query($sqlWishlistCount);
+$rowWishlistCount = $resultWishlistCount->fetch_assoc();
+$WishlistCount = $rowWishlistCount['wishlist_count'];
+// Query to count total products
+$sqlProductCount = "SELECT COUNT(*) AS product_count FROM product";
+$resultProductCount = $conn->query($sqlProductCount);
+$rowProductCount = $resultProductCount->fetch_assoc();
+$productCount = $rowProductCount['product_count'];
+
+// Query to sum up prices in wishlist
+$sqlWishlistTotal = "SELECT SUM(price) AS total_price FROM wishlist";
+$resultWishlistTotal = $conn->query($sqlWishlistTotal);
+$rowWishlistTotal = $resultWishlistTotal->fetch_assoc();
+$wishlistTotal = $rowWishlistTotal['total_price'];
+
+// Query to count total visitors
+// $sqlVisitorCount = "SELECT COUNT(*) AS visitor_count FROM visitor";
+// $resultVisitorCount = $conn->query($sqlVisitorCount);
+// $rowVisitorCount = $resultVisitorCount->fetch_assoc();
+// $visitorCount = $rowVisitorCount['visitor_count'];
+
+// Close connection
+$conn->close();
+?>
+
 <!doctype html>
 
 <html lang="en">
@@ -108,9 +138,9 @@
                                         </div>
                                         <div class="col-sm-8">
                                             <div class="detail">
-                                                <a href="#">
+                                                <a href="wishlist.php">
                                                     <p class="detail-subtitle">All Wishlists</p>
-                                                    <span class="number">6,267</span>
+                                                    <span class="number"><?php echo $WishlistCount; ?></span>
                                                 </a>
                                             </div>
                                         </div>
@@ -135,9 +165,9 @@
                                         </div>
                                         <div class="col-sm-8">
                                             <div class="detail">
-                                                <a href="#">
+                                                <a href="wishlist.php">
                                                     <p class="detail-subtitle">Wishlist Amount</p>
-                                                    <span class="number">$180,900</span>
+                                                    <span class="number"><?php echo number_format($wishlistTotal, 2); ?> <br>Ksh</span>
                                                     </a>
                                             </div>
                                         </div>
@@ -162,9 +192,9 @@
                                         </div>
                                         <div class="col-sm-8">
                                             <div class="detail">
-                                                <a href="#">
+                                                <a href="visitors.php">
                                                     <p class="detail-subtitle">All Visitors</p>
-                                                    <span class="number">28,210</span>
+                                                    <span class="number"><?php echo $visitorCount; ?></span>
                                                 </a>
                                             </div>
                                         </div>
@@ -190,9 +220,9 @@
                                         
                                             <div class="col-sm-8">
                                                 <div class="detail">
-                                                    <a href="#">
+                                                    <a href="products.php">
                                                         <p class="detail-subtitle">All Products</p>
-                                                        <span class="number">75</span>
+                                                        <span class="number"><?php echo $productCount; ?></span>
                                                     </a>
                                                 </div>
                                             </div>
