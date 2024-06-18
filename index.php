@@ -1,3 +1,180 @@
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+date_default_timezone_set('Africa/Nairobi'); // Set Nairobi timezone
+
+session_start();
+
+// Function to get device identifier
+function getDeviceIdentifier() {
+    $device_id = isset($_COOKIE['device_id']) ? $_COOKIE['device_id'] : '';
+
+    if (empty($device_id)) {
+        $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        $ip = get_client_ip();
+        $device_id = md5($user_agent . $ip);
+        setcookie('device_id', $device_id, time() + (86400 * 30), '/'); // 30 days expiration
+        $_SESSION['device_id'] = $device_id;
+    }
+
+    return $device_id;
+}
+
+// Function to get client IP address
+function get_client_ip() {
+    $ipaddress = '';
+    if (getenv('HTTP_CLIENT_IP'))
+        $ipaddress = getenv('HTTP_CLIENT_IP');
+    else if(getenv('HTTP_X_FORWARDED_FOR'))
+        $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+    else if(getenv('HTTP_X_FORWARDED'))
+        $ipaddress = getenv('HTTP_X_FORWARDED');
+    else if(getenv('HTTP_FORWARDED_FOR'))
+        $ipaddress = getenv('HTTP_FORWARDED_FOR');
+    else if(getenv('HTTP_FORWARDED'))
+        $ipaddress = getenv('HTTP_FORWARDED');
+    else if(getenv('REMOTE_ADDR'))
+        $ipaddress = getenv('REMOTE_ADDR');
+    else
+        $ipaddress = 'UNKNOWN';
+    return $ipaddress;
+}
+
+// Function to get browser information
+function getBrowser() {
+    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+    $browser = "Unknown Browser";
+
+    $browser_array = array(
+        '/msie/i' => 'Internet Explorer',
+        '/firefox/i' => 'Firefox',
+        '/safari/i' => 'Safari',
+        '/chrome/i' => 'Chrome',
+        '/edge/i' => 'Edge',
+        '/opera/i' => 'Opera',
+        '/netscape/i' => 'Netscape',
+        '/maxthon/i' => 'Maxthon',
+        '/konqueror/i' => 'Konqueror',
+        '/mobile/i' => 'Handheld Browser'
+    );
+
+    foreach ($browser_array as $regex => $value) {
+        if (preg_match($regex, $user_agent)) {
+            $browser = $value;
+            break;
+        }
+    }
+
+    return $browser;
+}
+
+// Function to log page visits
+function logPageVisit($page, $device_id) {
+    include 'db/db_connection.php';
+
+    $time_visited = date('Y-m-d H:i:s');
+
+    $sql = "INSERT INTO visitor (device_id, ip_address, browser, time_in, last_visited_page) 
+            VALUES (?, ?, ?, ?, ?)
+            ON DUPLICATE KEY UPDATE
+            time_in = VALUES(time_in), last_visited_page = VALUES(last_visited_page)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssss", $device_id, $_SESSION['ip_address'], $_SESSION['browser'], $time_visited, $page);
+    $stmt->execute();
+
+    if ($stmt->errno) {
+        echo "Error inserting or updating visitor: " . $stmt->error;
+    }
+
+    $stmt->close();
+    $conn->close();
+}
+
+// Function to update visitor data with time_out
+function updateVisitorData($device_id, $time_out) {
+    include 'db/db_connection.php';
+
+    $sql = "UPDATE visitor SET time_out = ? WHERE device_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $time_out, $device_id);
+    $stmt->execute();
+
+    if ($stmt->errno) {
+        echo "Error updating time_out: " . $stmt->error;
+    }
+
+    $stmt->close();
+    $conn->close();
+}
+
+// Check if the device is logging out or exiting the website
+if (isset($_GET['logout']) && isset($_SESSION['device_id'])) {
+    $device_id = $_SESSION['device_id'];
+    $time_out = date('Y-m-d H:i:s');
+    updateVisitorData($device_id, $time_out);
+}
+
+// Set session IP address and browser if not already set
+if (!isset($_SESSION['ip_address'])) {
+    $_SESSION['ip_address'] = get_client_ip();
+}
+
+if (!isset($_SESSION['browser'])) {
+    $_SESSION['browser'] = getBrowser();
+}
+
+// Log the current page visit
+$current_page = $_SERVER['REQUEST_URI'];
+logPageVisit($current_page, $_SESSION['device_id']);
+
+// Function to get the device identifier
+$device_id = getDeviceIdentifier();
+
+// Get the current timestamp
+$time_in = date('Y-m-d H:i:s');
+
+// Insert or update the visitor data in the database
+include 'db/db_connection.php';
+
+// Check if the visitor already exists in the database
+$sql = "SELECT * FROM visitor WHERE device_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $device_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    // Visitor already exists, update the time_in and last_visited_page
+    $sql = "UPDATE visitor SET time_in = ?, last_visited_page = ? WHERE device_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sss", $time_in, $current_page, $device_id);
+    $stmt->execute();
+
+    if ($stmt->errno) {
+        echo "Error updating visitor: " . $stmt->error;
+    }
+} else {
+    // Visitor doesn't exist, insert a new record
+    $sql = "INSERT INTO visitor (device_id, ip_address, browser, time_in, last_visited_page) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssss", $device_id, $_SESSION['ip_address'], $_SESSION['browser'], $time_in, $current_page);
+    $stmt->execute();
+
+    if ($stmt->errno) {
+        echo "Error inserting visitor: " . $stmt->error;
+    }
+}
+
+$stmt->close();
+$conn->close();
+?>
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 

@@ -19,10 +19,10 @@ $rowWishlistTotal = $resultWishlistTotal->fetch_assoc();
 $wishlistTotal = $rowWishlistTotal['total_price'];
 
 // Query to count total visitors
-// $sqlVisitorCount = "SELECT COUNT(*) AS visitor_count FROM visitor";
-// $resultVisitorCount = $conn->query($sqlVisitorCount);
-// $rowVisitorCount = $resultVisitorCount->fetch_assoc();
-// $visitorCount = $rowVisitorCount['visitor_count'];
+ $sqlVisitorCount = "SELECT COUNT(*) AS visitor_count FROM visitor";
+ $resultVisitorCount = $conn->query($sqlVisitorCount);
+ $rowVisitorCount = $resultVisitorCount->fetch_assoc();
+ $visitorCount = $rowVisitorCount['visitor_count'];
 
 // Close connection
 $conn->close();
@@ -166,8 +166,8 @@ $conn->close();
                                         <div class="col-sm-8">
                                             <div class="detail">
                                                 <a href="wishlist.php">
-                                                    <p class="detail-subtitle">Wishlist Amount</p>
-                                                    <span class="number"><?php echo number_format($wishlistTotal, 2); ?> <br>Ksh</span>
+                                                    <p class="detail-subtitle">Wishlist total(ksh)</p>
+                                                    <span class="number"><?php echo number_format($wishlistTotal, 2); ?> </span>
                                                     </a>
                                             </div>
                                         </div>
