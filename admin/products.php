@@ -1,12 +1,17 @@
-<!doctype html>
-<!-- 
-* Bootstrap Simple Admin Template
-* Version: 2.1
-* Author: Alexis Luna
-* Website: https://github.com/alexis-luna/bootstrap-simple-admin-template
--->
-<html lang="en">
 
+<?php
+// Include database connection
+include 'db_connection.php';
+
+// Fetch products from the database
+$sql = "SELECT id, name, images, description, price, category,length,width,depth, created_at FROM product";
+$result = $conn->query($sql);
+
+$count = 1;
+?>
+<!doctype html>
+
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -103,110 +108,65 @@
                         </h3>
                     </div>
                     <div class="box box-primary">
-                        <div class="box-body">
-                            <div class="search-bar">
-                                <input type="text" class="form-control" id="searchInput" placeholder="Search...">
-                            </div>
-                            <div class="table-responsive">
-                                <table width="100%" class="table table-hover" id="dataTables-example">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Images</th>
-                                            <th>Description</th>
-                                            <th>Price</th>
-                                            <th>Category</th>
-                                            <th>Upload Time</th>
-                                            
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Philip Chaney</td>
-                                            <td>philip.chaney@gmail.com</td>
-                                            <td>Manager</td>
-                                            <td>Admin</td>
-                                            <td>Active</td>
-                                            <td>Active</td>
-                                            <td>Active</td>
-                                            
-                                            <td class="text-end">
-                                                <a href="" class="btn btn-outline-info btn-rounded"><i class="fas fa-pen"></i></a>
-                                                <a href="" class="btn btn-outline-danger btn-rounded"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Doris Greene</td>
-                                            <td>ms.greene@outlook.com</td>
-                                            <td>Writer</td>
-                                            <td>Staff</td>
-                                            <td>Active</td>
-                                            <td class="text-end">
-                                                <a href="" class="btn btn-outline-info btn-rounded"><i class="fas fa-pen"></i></a>
-                                                <a href="" class="btn btn-outline-danger btn-rounded"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Mason Porter</td>
-                                            <td>mason_porter@gmail.com</td>
-                                            <td>Contributor</td>
-                                            <td>Staff</td>
-                                            <td>Active</td>
-                                            <td class="text-end">
-                                                <a href="" class="btn btn-outline-info btn-rounded"><i class="fas fa-pen"></i></a>
-                                                <a href="" class="btn btn-outline-danger btn-rounded"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Minerva Hooper</td>
-                                            <td>minerva.hooper@gmail.com</td>
-                                            <td>Administrator</td>
-                                            <td>Admin</td>
-                                            <td>Disabled</td>
-                                            <td class="text-end">
-                                                <a href="" class="btn btn-outline-info btn-rounded"><i class="fas fa-pen"></i></a>
-                                                <a href="" class="btn btn-outline-danger btn-rounded"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jessie Williams</td>
-                                            <td>jessie@gmail.com</td>
-                                            <td>Administrator</td>
-                                            <td>Admin</td>
-                                            <td>Active</td>
-                                            <td class="text-end">
-                                                <a href="" class="btn btn-outline-info btn-rounded"><i class="fas fa-pen"></i></a>
-                                                <a href="" class="btn btn-outline-danger btn-rounded"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Peter Benhams</td>
-                                            <td>pette@gmail.com</td>
-                                            <td>Editor</td>
-                                            <td>Staff</td>
-                                            <td>Active</td>
-                                            <td class="text-end">
-                                                <a href="" class="btn btn-outline-info btn-rounded"><i class="fas fa-pen"></i></a>
-                                                <a href="" class="btn btn-outline-danger btn-rounded"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jose Rodriguez</td>
-                                            <td>jose.rodz@gmail.com</td>
-                                            <td>Author</td>
-                                            <td>Staff</td>
-                                            <td>Active</td>
-                                            <td class="text-end">
-                                                <a href="" class="btn btn-outline-info btn-rounded"><i class="fas fa-pen"></i></a>
-                                                <a href="" class="btn btn-outline-danger btn-rounded"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+        <div class="box-body">
+            <!-- <div class="search-bar">
+                <input type="text" class="form-control" id="searchInput" placeholder="Search...">
+            </div> -->
+            <div class="table-responsive">
+            <table width="100%" class="table table-hover" id="dataTables-example">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Images</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Length</th>
+                        <th>Width</th>
+                        <th>Depth</th>
+                        <th>Upload Time</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            // Decode images JSON
+                            $images = json_decode($row['images']);
+                            // Display product data
+                            echo "<tr>";
+                            echo "<td>" . $count . "</td>"; // Display count
+                            echo "<td>" . $row['name'] . "</td>";
+                            echo "<td>";
+                            foreach ($images as $image) {
+                                echo "<img src='uploads/" . $image . "' alt='" . $row['name'] . "' width='50' height='50' style='margin-right: 5px;'>";
+                            }
+                            echo "</td>";
+                            echo "<td>" . $row['description'] . "</td>";
+                            echo "<td>" . $row['price'] . "</td>";
+                            echo "<td>" . $row['category'] . "</td>";
+                            echo "<td>" . $row['length'] . "</td>";
+                            echo "<td>" . $row['width'] . "</td>";
+                            echo "<td>" . $row['depth'] . "</td>";
+                            echo "<td>" . $row['created_at'] . "</td>";
+                            echo "<td class='text-end'>
+                                    <a href='edit_product.php?id=" . $row['id'] . "' class='btn btn-outline-info btn-rounded'><i class='fas fa-pen'></i></a>
+                                    <a href='delete_product.php?id=" . $row['id'] . "' class='btn btn-outline-danger btn-rounded'><i class='fas fa-trash'></i></a>
+                                  </td>";
+                            echo "</tr>";
+                            $count++; // Increment count
+                        }
+                    } else {
+                        echo "<tr><td colspan='8'>No products found</td></tr>";
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
                 </div>
             </div>
         </div>
@@ -233,3 +193,7 @@
 </body>
 
 </html>
+<?php
+// Close connection
+$conn->close();
+?>
