@@ -19,17 +19,17 @@ $rowWishlistTotal = $resultWishlistTotal->fetch_assoc();
 $wishlistTotal = $rowWishlistTotal['total_price'];
 
 // Query to count total visitors
-<<<<<<< HEAD
+
  $sqlVisitorCount = "SELECT COUNT(*) AS visitor_count FROM visitor";
  $resultVisitorCount = $conn->query($sqlVisitorCount);
  $rowVisitorCount = $resultVisitorCount->fetch_assoc();
  $visitorCount = $rowVisitorCount['visitor_count'];
-=======
-// $sqlVisitorCount = "SELECT COUNT(*) AS visitor_count FROM visitor";
-// $resultVisitorCount = $conn->query($sqlVisitorCount);
-// $rowVisitorCount = $resultVisitorCount->fetch_assoc();
-// $visitorCount = $rowVisitorCount['visitor_count'];
->>>>>>> 18217bcc0876a5e806b21e451e8255d7f6e2cdab
+
+ $sqlVisitorCount = "SELECT COUNT(*) AS visitor_count FROM visitor";
+ $resultVisitorCount = $conn->query($sqlVisitorCount);
+ $rowVisitorCount = $resultVisitorCount->fetch_assoc();
+ $visitorCount = $rowVisitorCount['visitor_count'];
+
 
 // Close connection
 $conn->close();
@@ -173,13 +173,12 @@ $conn->close();
                                         <div class="col-sm-8">
                                             <div class="detail">
                                                 <a href="wishlist.php">
-<<<<<<< HEAD
+
                                                     <p class="detail-subtitle">Wishlist total(ksh)</p>
                                                     <span class="number"><?php echo number_format($wishlistTotal, 2); ?> </span>
-=======
-                                                    <p class="detail-subtitle">Wishlist Amount</p>
-                                                    <span class="number"><?php echo number_format($wishlistTotal, 2); ?> <br>Ksh</span>
->>>>>>> 18217bcc0876a5e806b21e451e8255d7f6e2cdab
+
+                                                    
+
                                                     </a>
                                             </div>
                                         </div>
@@ -282,131 +281,157 @@ $conn->close();
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="content">
-                                    <div class="head">
-                                        <h5 class="mb-0">Top Visitors by Country</h5>
-                                        <p class="text-muted">Current year website visitor data</p>
-                                    </div>
-                                    <div class="canvas-wrapper">
-                                        <table class="table table-striped">
-                                            <thead class="success">
-                                                <tr>
-                                                    <th>Country</th>
-                                                    <th class="text-end">Unique Visitors</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td><i class="flag-icon flag-icon-us"></i> United States</td>
-                                                    <td class="text-end">27,340</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><i class="flag-icon flag-icon-in"></i> India</td>
-                                                    <td class="text-end">21,280</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><i class="flag-icon flag-icon-jp"></i> Japan</td>
-                                                    <td class="text-end">18,210</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><i class="flag-icon flag-icon-gb"></i> United Kingdom</td>
-                                                    <td class="text-end">15,176</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><i class="flag-icon flag-icon-es"></i> Spain</td>
-                                                    <td class="text-end">14,276</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><i class="flag-icon flag-icon-de"></i> Germany</td>
-                                                    <td class="text-end">13,176</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><i class="flag-icon flag-icon-br"></i> Brazil</td>
-                                                    <td class="text-end">12,176</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><i class="flag-icon flag-icon-id"></i> Indonesia</td>
-                                                    <td class="text-end">11,886</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><i class="flag-icon flag-icon-ph"></i> Philippines</td>
-                                                    <td class="text-end">11,509</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><i class="flag-icon flag-icon-nz"></i> New Zealand</td>
-                                                    <td class="text-end">1,700</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="content">
-                                    <div class="head">
-                                        <h5 class="mb-0">Most Visited Pages</h5>
-                                        <p class="text-muted">Current year website visitor data</p>
-                                    </div>
-                                    <div class="canvas-wrapper">
-                                        <table class="table table-striped">
-                                            <thead class="success">
-                                                <tr>
-                                                    <th>Page Name</th>
-                                                    <th class="text-end">Visitors</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>/about.html <a href="#"><i class="fas fa-link blue"></i></a></td>
-                                                    <td class="text-end">8,340</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>/special-promo.html <a href="#"><i class="fas fa-link blue"></i></a></td>
-                                                    <td class="text-end">7,280</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>/products.html <a href="#"><i class="fas fa-link blue"></i></a></td>
-                                                    <td class="text-end">6,210</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>/documentation.html <a href="#"><i class="fas fa-link blue"></i></a></td>
-                                                    <td class="text-end">5,176</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>/customer-support.html <a href="#"><i class="fas fa-link blue"></i></a></td>
-                                                    <td class="text-end">4,276</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>/index.html <a href="#"><i class="fas fa-link blue"></i></a></td>
-                                                    <td class="text-end">3,176</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>/products-pricing.html <a href="#"><i class="fas fa-link blue"></i></a></td>
-                                                    <td class="text-end">2,176</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>/product-features.html <a href="#"><i class="fas fa-link blue"></i></a></td>
-                                                    <td class="text-end">1,886</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>/contact-us.html <a href="#"><i class="fas fa-link blue"></i></a></td>
-                                                    <td class="text-end">1,509</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>/terms-and-condition.html <a href="#"><i class="fas fa-link blue"></i></a></td>
-                                                    <td class="text-end">1,100</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        <div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="content">
+                <div class="head">
+                    <h5 class="mb-0">Top Visitors by Country</h5>
+                    <p class="text-muted">Current year website visitor data</p>
+                </div>
+                <div class="canvas-wrapper">
+                    <table class="table table-striped">
+                        <thead class="success">
+                            <tr>
+                                <th>Country</th>
+                                <th class="text-end">Unique Visitors</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            date_default_timezone_set('Africa/Nairobi');
+
+                            // Function to simulate daily increments for Kenya
+                            function getKenyaVisits() {
+                                $time = date('H'); // Current hour in 24-hour format
+
+                                // Determine the increment based on the current time
+                                if ($time >= 5 && $time < 10) {
+                                    // Morning phase (05:00 - 10:00)
+                                    return rand(1000, 5000);
+                                } elseif ($time >= 10 && $time < 15) {
+                                    // Midday phase (10:00 - 15:00)
+                                    return rand(2000, 7000);
+                                } elseif ($time >= 15 && $time < 20) {
+                                    // Afternoon phase (15:00 - 20:00)
+                                    return rand(3000, 9000);
+                                } else {
+                                    // Outside the specified phases, return a default increment
+                                    return rand(1000, 3000);
+                                }
+                            }
+
+                            // Function to generate initial random visits for all countries (all start with 0)
+                            function getInitialVisits() {
+                                return 0; // All countries start with 0 visits initially
+                            }
+
+                            // Array of countries with their flags and base visits
+                            $countries = [
+                                ["<i class='flag-icon flag-icon-ke'></i> Kenya",  getInitialVisits()],
+                                ["<i class='flag-icon flag-icon-ug'></i> Uganda", getInitialVisits()],
+                                ["<i class='flag-icon flag-icon-tz'></i> Tanzania", getInitialVisits()],
+                                ["<i class='flag-icon flag-icon-rw'></i> Rwanda", getInitialVisits()],
+                                ["<i class='flag-icon flag-icon-us'></i> United States", getInitialVisits()],
+                                ["<i class='flag-icon flag-icon-ng'></i> Nigeria", getInitialVisits()],
+                            ];
+
+                            // Sort countries array so Kenya is always at the top
+                            usort($countries, function($a, $b) {
+                                if ($a[0] === "<i class='flag-icon flag-icon-ke'></i> Kenya") {
+                                    return -1;
+                                } elseif ($b[0] === "<i class='flag-icon flag-icon-ke'></i> Kenya") {
+                                    return 1;
+                                } else {
+                                    return $b[1] - $a[1];
+                                }
+                            });
+
+                            // Assign Kenya's actual visit count using the getKenyaVisits function
+                            $countries[0][1] = getKenyaVisits();
+
+                            // Generate the table rows
+                            foreach ($countries as $country) {
+                                echo "<tr>
+                                        <td>{$country[0]}</td>
+                                        <td class='text-end'>" . number_format($country[1]) . "</td>
+                                      </tr>";
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="content">
+                <div class="head">
+                    <h5 class="mb-0">Most Visited Pages</h5>
+                    <p class="text-muted">Current year website visitor data</p>
+                </div>
+                <div class="canvas-wrapper">
+                    <table class="table table-striped">
+                        <thead class="success">
+                            <tr>
+                                <th>Page Name</th>
+                                <th class="text-end">Visitors</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            // Database connection
+                            include 'db_connection.php';
+
+                            // Query to get the most visited pages
+                            $sql = "SELECT last_visited_page, COUNT(*) as visits 
+                                    FROM visitor 
+                                    GROUP BY last_visited_page 
+                                    ORDER BY visits DESC 
+                                    LIMIT 10";
+                            $result = $conn->query($sql);
+
+                            // Check if the query was successful
+                            if ($result->num_rows > 0) {
+                                // Loop through the results and generate table rows
+                                while ($row = $result->fetch_assoc()) {
+                                    $page = htmlspecialchars($row['last_visited_page']);
+                                    $visits = number_format($row['visits']);
+                                    echo "<tr>
+                                            <td>{$page} <a href=\"{$page}\"><i class=\"fas fa-link blue\"></i></a></td>
+                                            <td class=\"text-end\">{$visits}</td>
+                                          </tr>";
+                                }
+                            } else {
+                                echo "<tr><td colspan=\"2\">No data available</td></tr>";
+                            }
+                            // Query to calculate the sum of the price column
+                            $sql = "SELECT SUM(price) AS total_price FROM product";
+                            $result = $conn->query($sql);
+
+                            // Check if the query was successful
+                            if ($result->num_rows > 0) {
+                                // Fetch the sum of price
+                                $row = $result->fetch_assoc();
+                                $totalPrice = $row['total_price'];
+                            } else {
+                                $totalPrice = 0; // Default to 0 if no rows are returned
+                            }
+
+                            
+                            $conn->close();
+
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
                     <div class="row">
                         <div class="col-sm-6 col-md-6 col-lg-3">
                             <div class="card">
@@ -453,8 +478,8 @@ $conn->close();
                                     <div class="row">
                                         <div class="dfd text-center">
                                             <i class="olive large-icon mb-2 fas fa-dollar-sign"></i>
-                                            <h4 class="mb-0">+98,601</h4>
-                                            <p class="text-muted">TOTAL WISHLIST AMOUNT</p>
+                                            <h4 class="mb-0"><?php echo number_format($totalPrice, 2); ?></h4>
+                                            <p class="text-muted">TOTAL PRODUCT AMOUNT</p>
                                         </div>
                                     </div>
                                 </div>

@@ -1,3 +1,145 @@
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+date_default_timezone_set('Africa/Nairobi'); // Set Nairobi timezone
+
+session_start();
+
+// Function to get device identifier
+function getDeviceIdentifier() {
+    $device_id = isset($_COOKIE['device_id']) ? $_COOKIE['device_id'] : '';
+
+    if (empty($device_id)) {
+        $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        $ip = get_client_ip();
+        $device_id = md5($user_agent . $ip);
+        setcookie('device_id', $device_id, time() + (86400 * 30), '/'); // 30 days expiration
+        $_SESSION['device_id'] = $device_id;
+    }
+
+    return $device_id;
+}
+
+// Function to get client IP address
+function get_client_ip() {
+    $ipaddress = '';
+    if (getenv('HTTP_CLIENT_IP'))
+        $ipaddress = getenv('HTTP_CLIENT_IP');
+    else if(getenv('HTTP_X_FORWARDED_FOR'))
+        $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+    else if(getenv('HTTP_X_FORWARDED'))
+        $ipaddress = getenv('HTTP_X_FORWARDED');
+    else if(getenv('HTTP_FORWARDED_FOR'))
+        $ipaddress = getenv('HTTP_FORWARDED_FOR');
+    else if(getenv('HTTP_FORWARDED'))
+        $ipaddress = getenv('HTTP_FORWARDED');
+    else if(getenv('REMOTE_ADDR'))
+        $ipaddress = getenv('REMOTE_ADDR');
+    else
+        $ipaddress = 'UNKNOWN';
+    return $ipaddress;
+}
+
+// Function to get browser information
+function getBrowser() {
+    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+    $browser = "Unknown Browser";
+
+    $browser_array = array(
+        '/msie/i' => 'Internet Explorer',
+        '/firefox/i' => 'Firefox',
+        '/safari/i' => 'Safari',
+        '/chrome/i' => 'Chrome',
+        '/edge/i' => 'Edge',
+        '/opera/i' => 'Opera',
+        '/netscape/i' => 'Netscape',
+        '/maxthon/i' => 'Maxthon',
+        '/konqueror/i' => 'Konqueror',
+        '/mobile/i' => 'Handheld Browser'
+    );
+
+    foreach ($browser_array as $regex => $value) {
+        if (preg_match($regex, $user_agent)) {
+            $browser = $value;
+            break;
+        }
+    }
+
+    return $browser;
+}
+
+// Function to log page visits
+function logPageVisit($page, $device_id) {
+    include 'db/db_connection.php';
+
+    $time_visited = date('Y-m-d H:i:s');
+
+    $sql = "INSERT INTO visitor (device_id, ip_address, browser, time_in, last_visited_page) 
+            VALUES (?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssss", $device_id, $_SESSION['ip_address'], $_SESSION['browser'], $time_visited, $page);
+    $stmt->execute();
+
+    if ($stmt->errno) {
+        echo "Error inserting visitor: " . $stmt->error;
+    }
+
+    $stmt->close();
+    $conn->close();
+}
+
+// Function to log visitor logout with current time as time_out
+function logVisitorLogout($device_id) {
+    include 'db/db_connection.php';
+
+    $time_out = date('Y-m-d H:i:s');
+
+    $sql = "INSERT INTO visitor (device_id, ip_address, browser, time_in, last_visited_page, time_out)
+            VALUES (?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssssss", $device_id, $_SESSION['ip_address'], $_SESSION['browser'], $_SESSION['time_in'], $_SERVER['REQUEST_URI'], $time_out);
+    $stmt->execute();
+
+    if ($stmt->errno) {
+        echo "Error inserting visitor logout: " . $stmt->error;
+    }
+
+    $stmt->close();
+    $conn->close();
+}
+
+// Check if the device is logging out or exiting the website
+if (isset($_GET['logout']) && isset($_SESSION['device_id'])) {
+    $device_id = $_SESSION['device_id'];
+    logVisitorLogout($device_id);
+    session_destroy();
+    exit;
+}
+
+// Set session IP address and browser if not already set
+if (!isset($_SESSION['ip_address'])) {
+    $_SESSION['ip_address'] = get_client_ip();
+}
+
+if (!isset($_SESSION['browser'])) {
+    $_SESSION['browser'] = getBrowser();
+}
+
+// Function to get the device identifier
+$device_id = getDeviceIdentifier();
+
+// Get the current timestamp
+$time_in = date('Y-m-d H:i:s');
+$_SESSION['time_in'] = $time_in;
+
+// Log the current page visit
+$current_page = $_SERVER['REQUEST_URI'];
+logPageVisit($current_page, $device_id);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

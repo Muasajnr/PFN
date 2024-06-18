@@ -111,13 +111,13 @@
                                             <th>Device</th>
                                             <th>Browser</th>
                                             <th>Location</th>
-                                            <th>Page Visited</th>
-                                            <th>Time In</th>
-                                            <th>Time Out</th>
+                                            <th>Last Page Visited</th>
+                                            <th>Date & Time</th>
+                                            <!-- <th>Time Out</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php
+                                    <?php
                                         // Include database connection
                                         include 'db_connection.php';
 
@@ -135,7 +135,7 @@
                                                 echo "<td>" . $row['last_visited_page'] . "</td>";
                                                 echo "<td>" . $row['time_in'] . "</td>";
                                                
-                                                echo "<td>" . $row['time_out'] . "</td>";
+                                                //echo "<td>" . $row['time_out'] . "</td>";
                                                 echo "</tr>";
                                             }
                                         } else {

@@ -1,9 +1,50 @@
 <?php
+session_start();
 include 'db/db_connection.php';
 
-// Fetch wishlist data
-$sql = "SELECT * FROM wishlist";
-$result = $conn->query($sql);
+// Function to get client IP address
+function get_client_ip() {
+    if (isset($_SERVER['HTTP_CLIENT_IP'])) {
+        return $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        return $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } else {
+        return $_SERVER['REMOTE_ADDR'];
+    }
+}
+
+// Function to generate a unique device identifier
+function getDeviceIdentifier() {
+    // Try to retrieve a previously set identifier from cookie or session
+    $device_id = isset($_COOKIE['device_id']) ? $_COOKIE['device_id'] : '';
+
+    if (empty($device_id)) {
+        // Generate a new unique identifier based on user agent and IP address
+        $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        $ip = get_client_ip();
+
+        // Create a device identifier based on user agent and IP
+        $device_id = md5($user_agent . $ip);
+
+        // Set the identifier as a cookie (adjust expiration as needed)
+        setcookie('device_id', $device_id, time() + (86400 * 30), '/'); // 30 days expiration
+
+        // Optionally, store in session for server-side tracking (if needed)
+        $_SESSION['device_id'] = $device_id;
+    }
+
+    return $device_id;
+}
+
+// Get the current device ID
+$currentDeviceID = getDeviceIdentifier();
+
+// Fetch wishlist data only for the current device
+$sql = "SELECT * FROM wishlist WHERE deviceID = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $currentDeviceID);
+$stmt->execute();
+$result = $stmt->get_result();
 $wishlist_data = [];
 
 if ($result->num_rows > 0) {
@@ -12,6 +53,7 @@ if ($result->num_rows > 0) {
     }
 }
 
+$stmt->close();
 $conn->close();
 ?>
 
@@ -129,14 +171,19 @@ $conn->close();
                         <th onclick="sortTable(5)">Length</th>
                         <th onclick="sortTable(6)">Width</th>
                         <th onclick="sortTable(7)">Depth</th>
-                        
-                        <th onclick="sortTable(13)">Timestamp</th>
+                        <th onclick="sortTable(8)">Timestamp</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
+                   <?php
+                    $count=0;
+                    ?>
                     <?php foreach ($wishlist_data as $item): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($item['product_id']); ?></td>
+                    <?php  $count++;
+                        ?>
+                        <td><?php echo $count; ?></td>
                         <td><?php echo htmlspecialchars($item['name']); ?></td>
                         <td><?php echo htmlspecialchars($item['price']); ?></td>
                         <td><?php echo htmlspecialchars($item['description']); ?></td>
@@ -144,9 +191,8 @@ $conn->close();
                         <td><?php echo htmlspecialchars($item['length']); ?></td>
                         <td><?php echo htmlspecialchars($item['width']); ?></td>
                         <td><?php echo htmlspecialchars($item['depth']); ?></td>
-                        
                         <td><?php echo htmlspecialchars($item['timestamp']); ?></td>
-                        <td><a href='delete_product.php?id=" . $row['id'] . "' class='btn btn-outline-danger btn-rounded'><i class='fas fa-trash'></i></a></td>
+                        <td><a href='deletewishlist.php?id=<?php echo $item['id']; ?>' class='btn btn-outline-danger btn-rounded'><i class='fas fa-trash'></i></a></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>

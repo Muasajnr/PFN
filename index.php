@@ -77,32 +77,33 @@ function logPageVisit($page, $device_id) {
     $time_visited = date('Y-m-d H:i:s');
 
     $sql = "INSERT INTO visitor (device_id, ip_address, browser, time_in, last_visited_page) 
-            VALUES (?, ?, ?, ?, ?)
-            ON DUPLICATE KEY UPDATE
-            time_in = VALUES(time_in), last_visited_page = VALUES(last_visited_page)";
+            VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sssss", $device_id, $_SESSION['ip_address'], $_SESSION['browser'], $time_visited, $page);
     $stmt->execute();
 
     if ($stmt->errno) {
-        echo "Error inserting or updating visitor: " . $stmt->error;
+        echo "Error inserting visitor: " . $stmt->error;
     }
 
     $stmt->close();
     $conn->close();
 }
 
-// Function to update visitor data with time_out
-function updateVisitorData($device_id, $time_out) {
+// Function to log visitor logout with current time as time_out
+function logVisitorLogout($device_id) {
     include 'db/db_connection.php';
 
-    $sql = "UPDATE visitor SET time_out = ? WHERE device_id = ?";
+    $time_out = date('Y-m-d H:i:s');
+
+    $sql = "INSERT INTO visitor (device_id, ip_address, browser, time_in, last_visited_page, time_out)
+            VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $time_out, $device_id);
+    $stmt->bind_param("ssssss", $device_id, $_SESSION['ip_address'], $_SESSION['browser'], $_SESSION['time_in'], $_SERVER['REQUEST_URI'], $time_out);
     $stmt->execute();
 
     if ($stmt->errno) {
-        echo "Error updating time_out: " . $stmt->error;
+        echo "Error inserting visitor logout: " . $stmt->error;
     }
 
     $stmt->close();
@@ -112,8 +113,9 @@ function updateVisitorData($device_id, $time_out) {
 // Check if the device is logging out or exiting the website
 if (isset($_GET['logout']) && isset($_SESSION['device_id'])) {
     $device_id = $_SESSION['device_id'];
-    $time_out = date('Y-m-d H:i:s');
-    updateVisitorData($device_id, $time_out);
+    logVisitorLogout($device_id);
+    session_destroy();
+    exit;
 }
 
 // Set session IP address and browser if not already set
@@ -125,51 +127,19 @@ if (!isset($_SESSION['browser'])) {
     $_SESSION['browser'] = getBrowser();
 }
 
-// Log the current page visit
-$current_page = $_SERVER['REQUEST_URI'];
-logPageVisit($current_page, $_SESSION['device_id']);
-
 // Function to get the device identifier
 $device_id = getDeviceIdentifier();
 
 // Get the current timestamp
 $time_in = date('Y-m-d H:i:s');
+$_SESSION['time_in'] = $time_in;
 
-// Insert or update the visitor data in the database
-include 'db/db_connection.php';
+// Log the current page visit
+$current_page = $_SERVER['REQUEST_URI'];
+logPageVisit($current_page, $device_id);
 
-// Check if the visitor already exists in the database
-$sql = "SELECT * FROM visitor WHERE device_id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $device_id);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows > 0) {
-    // Visitor already exists, update the time_in and last_visited_page
-    $sql = "UPDATE visitor SET time_in = ?, last_visited_page = ? WHERE device_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sss", $time_in, $current_page, $device_id);
-    $stmt->execute();
-
-    if ($stmt->errno) {
-        echo "Error updating visitor: " . $stmt->error;
-    }
-} else {
-    // Visitor doesn't exist, insert a new record
-    $sql = "INSERT INTO visitor (device_id, ip_address, browser, time_in, last_visited_page) VALUES (?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssss", $device_id, $_SESSION['ip_address'], $_SESSION['browser'], $time_in, $current_page);
-    $stmt->execute();
-
-    if ($stmt->errno) {
-        echo "Error inserting visitor: " . $stmt->error;
-    }
-}
-
-$stmt->close();
-$conn->close();
 ?>
+
 
 
 
