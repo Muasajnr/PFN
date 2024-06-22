@@ -157,6 +157,7 @@ $conn->close();
                         <a href="bedroom.php" class="nav-item nav-link">Bedroom</a>
                         <a href="fabrics.php" class="nav-item nav-link">Fabrics</a>
                         <a href="others.php" class="nav-item nav-link">Others</a>
+                        
                     </div>
                     <a href="wishlist.php" class="btn btn-primary px-3 d-none d-lg-flex"><i class="bi bi-suit-heart-fill"></i>&nbsp; Wishlist</a>
                 </div>
