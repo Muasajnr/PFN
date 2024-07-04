@@ -298,66 +298,97 @@ $conn->close();
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                            date_default_timezone_set('Africa/Nairobi');
+                           <?php
+date_default_timezone_set('Africa/Nairobi');
 
-                            // Function to simulate daily increments for Kenya
-                            function getKenyaVisits() {
-                                $time = date('H'); // Current hour in 24-hour format
+// Function to simulate daily increments for Kenya
+function getKenyaVisits() {
+    $time = date('H'); // Current hour in 24-hour format
 
-                                // Determine the increment based on the current time
-                                if ($time >= 5 && $time < 10) {
-                                    // Morning phase (05:00 - 10:00)
-                                    return rand(1000, 5000);
-                                } elseif ($time >= 10 && $time < 15) {
-                                    // Midday phase (10:00 - 15:00)
-                                    return rand(2000, 7000);
-                                } elseif ($time >= 15 && $time < 20) {
-                                    // Afternoon phase (15:00 - 20:00)
-                                    return rand(3000, 9000);
-                                } else {
-                                    // Outside the specified phases, return a default increment
-                                    return rand(1000, 3000);
-                                }
-                            }
+    // Determine the increment based on the current time
+    if ($time >= 5 && $time < 10) {
+        // Morning phase (05:00 - 10:00)
+        return rand(1000, 5000);
+    } elseif ($time >= 10 && $time < 15) {
+        // Midday phase (10:00 - 15:00)
+        return rand(2000, 7000);
+    } elseif ($time >= 15 && $time < 20) {
+        // Afternoon phase (15:00 - 20:00)
+        return rand(3000, 9000);
+    } else {
+        // Outside the specified phases, return a default increment
+        return rand(1000, 3000);
+    }
+}
 
-                            // Function to generate initial random visits for all countries (all start with 0)
-                            function getInitialVisits() {
-                                return 0; // All countries start with 0 visits initially
-                            }
+// Function to simulate daily increments for other countries
+function getOtherCountryVisits($kenyaVisits) {
+    return rand(1, intval($kenyaVisits / 4));
+}
 
-                            // Array of countries with their flags and base visits
-                            $countries = [
-                                ["<i class='flag-icon flag-icon-ke'></i> Kenya",  getInitialVisits()],
-                                ["<i class='flag-icon flag-icon-ug'></i> Uganda", getInitialVisits()],
-                                ["<i class='flag-icon flag-icon-tz'></i> Tanzania", getInitialVisits()],
-                                ["<i class='flag-icon flag-icon-rw'></i> Rwanda", getInitialVisits()],
-                                ["<i class='flag-icon flag-icon-us'></i> United States", getInitialVisits()],
-                                ["<i class='flag-icon flag-icon-ng'></i> Nigeria", getInitialVisits()],
-                            ];
+// Function to get stored visits or initialize them
+function getStoredVisits($country) {
+    $visits = isset($_SESSION[$country]) ? $_SESSION[$country] : 0;
+    return $visits;
+}
 
-                            // Sort countries array so Kenya is always at the top
-                            usort($countries, function($a, $b) {
-                                if ($a[0] === "<i class='flag-icon flag-icon-ke'></i> Kenya") {
-                                    return -1;
-                                } elseif ($b[0] === "<i class='flag-icon flag-icon-ke'></i> Kenya") {
-                                    return 1;
-                                } else {
-                                    return $b[1] - $a[1];
-                                }
-                            });
+// Function to update and store visits for a country
+function updateStoredVisits($country, $visits) {
+    $_SESSION[$country] = $visits;
+}
 
-                            // Assign Kenya's actual visit count using the getKenyaVisits function
-                            $countries[0][1] = getKenyaVisits();
+session_start(); // Start session for storing visit counts
 
-                            // Generate the table rows
-                            foreach ($countries as $country) {
-                                echo "<tr>
-                                        <td>{$country[0]}</td>
-                                        <td class='text-end'>" . number_format($country[1]) . "</td>
-                                      </tr>";
-                            }
-                            ?>
+// Array of countries with their flags
+$countries = [
+    ["<i class='flag-icon flag-icon-ke'></i> Kenya"],
+    ["<i class='flag-icon flag-icon-ug'></i> Uganda"],
+    ["<i class='flag-icon flag-icon-tz'></i> Tanzania"],
+    ["<i class='flag-icon flag-icon-rw'></i> Rwanda"],
+    ["<i class='flag-icon flag-icon-us'></i> United States"],
+    ["<i class='flag-icon flag-icon-ng'></i> Nigeria"],
+    ["<i class='flag-icon flag-icon-so'></i> Somalia"],
+    ["<i class='flag-icon flag-icon-et'></i> Ethiopia"],
+    ["<i class='flag-icon flag-icon-za'></i> South Africa"],
+    ["<i class='flag-icon flag-icon-sd'></i> Sudan"]
+];
+
+// Update Kenya's visit count and store it in session
+$kenyaVisits = getKenyaVisits();
+updateStoredVisits("<i class='flag-icon flag-icon-ke'></i> Kenya", getStoredVisits("<i class='flag-icon flag-icon-ke'></i> Kenya") + $kenyaVisits);
+
+// Update visit counts for other countries and store them in session
+foreach ($countries as $country) {
+    $countryName = $country[0];
+    if ($countryName !== "<i class='flag-icon flag-icon-ke'></i> Kenya") {
+        $newVisits = getOtherCountryVisits($kenyaVisits);
+        $currentVisits = getStoredVisits($countryName);
+        updateStoredVisits($countryName, $currentVisits + $newVisits);
+    }
+}
+
+// Sort countries by visit counts in descending order
+usort($countries, function($a, $b) {
+    $visitCountA = getStoredVisits($a[0]);
+    $visitCountB = getStoredVisits($b[0]);
+    return $visitCountB - $visitCountA;
+});
+
+// Generate the table rows
+foreach ($countries as $country) {
+    $countryName = $country[0];
+    $visitCount = getStoredVisits($countryName);
+    echo "<tr>
+            <td>{$countryName}</td>
+            <td class='text-end'>" . number_format($visitCount) . "</td>
+          </tr>";
+}
+?>
+
+
+
+
+
                         </tbody>
                     </table>
                 </div>

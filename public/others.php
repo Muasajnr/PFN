@@ -184,6 +184,25 @@ logPageVisit($current_page, $device_id);
             height: auto;
             display: block;
         }
+        .navbar-collapse {
+                position: relative;
+            }
+
+            .wishlist-mobile {
+                display: block !important;
+                position: absolute;
+                bottom: 10px;
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .wishlist-mobile {
+                display: none;
+            }
+        }
+
     </style>
 </head>
 
@@ -213,12 +232,14 @@ logPageVisit($current_page, $device_id);
                     <div class="navbar-nav ms-auto">
                         <a href="index.php" class="nav-item nav-link ">Home</a>
                         <a href="livingroom.php" class="nav-item nav-link">Living Room</a>
-                        <a href="dining.php" class="nav-item nav-link">Dining</a>
+                        <a href="dining.php" class="nav-item nav-link">Dinning</a>
                         <a href="bedroom.php" class="nav-item nav-link">Bedroom</a>
                         <a href="fabrics.php" class="nav-item nav-link">Fabrics</a>
                         <a href="others.php" class="nav-item nav-link active">Others</a>
+                        
                     </div>
                     <a href="wishlist.php" class="btn btn-primary px-3 d-none d-lg-flex"><i class="bi bi-suit-heart-fill"></i>&nbsp; Wishlist</a>
+                   
                 </div>
             </nav>
         </div>

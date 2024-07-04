@@ -214,11 +214,12 @@ logPageVisit($current_page, $device_id);
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto">
                         <a href="index.php" class="nav-item nav-link ">Home</a>
-                        <a href="livingroom.php" class="nav-item nav-link ">Living Room</a>
-                        <a href="dining.php" class="nav-item nav-link">Dining</a>
+                        <a href="livingroom.php" class="nav-item nav-link">Living Room</a>
+                        <a href="dining.php" class="nav-item nav-link">Dinning</a>
                         <a href="bedroom.php" class="nav-item nav-link">Bedroom</a>
                         <a href="fabrics.php" class="nav-item nav-link active">Fabrics</a>
                         <a href="others.php" class="nav-item nav-link">Others</a>
+                        
                     </div>
                     <a href="wishlist.php" class="btn btn-primary px-3 d-none d-lg-flex"><i class="bi bi-suit-heart-fill"></i>&nbsp; Wishlist</a>
                 </div>

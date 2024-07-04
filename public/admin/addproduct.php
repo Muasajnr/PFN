@@ -15,11 +15,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Handle file uploads
     $images = [];
     $targetDir = "uploads/";
+    if (!is_dir($targetDir)) {
+        mkdir($targetDir, 0777, true);
+    }
+
     foreach ($_FILES['images']['tmp_name'] as $key => $tmpName) {
         $fileName = basename($_FILES['images']['name'][$key]);
         $targetFilePath = $targetDir . $fileName;
         if (move_uploaded_file($tmpName, $targetFilePath)) {
             $images[] = $fileName;
+        } else {
+            echo "Failed to upload file: " . $fileName;
+            exit;
         }
     }
 
@@ -27,9 +34,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $imagesJson = json_encode($images);
 
     // Insert data into database
-    $sql = "INSERT INTO product (name, price, description, category, images,length,width,depth) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO product (name, price, description, category, images, length, width, depth) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssssss", $name, $price, $description, $category, $imagesJson, $length,$width,$depth);
+    if (!$stmt) {
+        echo "Error preparing statement: " . $conn->error;
+        exit;
+    }
+
+    $stmt->bind_param("ssssssss", $name, $price, $description, $category, $imagesJson, $length, $width, $depth);
 
     if ($stmt->execute()) {
         echo "Product added successfully!";
@@ -44,7 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 <!doctype html>
-
 <html lang="en">
 
 <head>
@@ -70,27 +81,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <ul class="list-unstyled components text-secondary">
                 <li>
-                    <a href="dashboard.php
-                    "><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a href="wishlist.php
-                    "><i class="fas fa-heart"></i> Wishlist</a>
+                    <a href="wishlist.php"><i class="fas fa-heart"></i> Wishlist</a>
                 </li>
                 <li>
-                    <a href="products.php
-                    "><i class="fas fa-table"></i> Products</a>
+                    <a href="products.php"><i class="fas fa-table"></i> Products</a>
                 </li>
                 <li>
-                    <a href="visitors.php
-                    "><i class="fas fa-chart-bar"></i> Visitors</a>
+                    <a href="visitors.php"><i class="fas fa-chart-bar"></i> Visitors</a>
                 </li>
                 <li>
-                    <a href="addproduct.php
-                    " style="color:red;"><i class="fa fa-plus"></i> ADD PRODUCT</a>
+                    <a href="addproduct.php" style="color:red;"><i class="fa fa-plus"></i> ADD PRODUCT</a>
                 </li>
-                
-                
             </ul>
         </nav>
         <!-- end of sidebar component -->
@@ -131,8 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <li><a href="" class="dropdown-item"><i class="fas fa-envelope"></i> Messages</a></li>
                                         <li><a href="" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a></li>
                                         <div class="dropdown-divider"></div>
-                                        <li><a href="index.php
-                                        " class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                                        <li><a href="index.php" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -147,88 +150,87 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <h3>New Product</h3>
                     </div>
                     <div class="row">
-                    <div class="col-lg-12">
-    <div class="card">
-        <div class="card-header">Add Product</div>
-        <div class="card-body">
-            <h5 class="card-title">Fill all fields and save to add a product</h5>
-            <form class="needs-validation" novalidate accept-charset="utf-8" enctype="multipart/form-data" action="addproduct.php" method="post">
-                <div class="row g-2">
-                    <div class="mb-3 col-md-6">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" name="name" placeholder="Product Name" required>
-                        <small class="form-text text-muted">Enter product name.</small>
-                        <div class="valid-feedback">Looks good!</div>
-                        <div class="invalid-feedback">Please enter Product Name.</div>
-                    </div>
-                    <div class="mb-3 col-md-6">
-                        <label for="price" class="form-label">Price</label>
-                        <input type="text" class="form-control" name="price" placeholder="Price" required>
-                        <small class="form-text text-muted">Product Price.</small>
-                        <div class="valid-feedback">Looks good!</div>
-                        <div class="invalid-feedback">Please enter product price.</div>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
-                    <input type="text" class="form-control" name="description" placeholder="Product Description" required style="height: 100px;">
-                    <div class="valid-feedback">Looks good!</div>
-                    <div class="invalid-feedback">Please enter product description.</div>
-                </div>
-                <div class="row g-2">
-                    <div class="mb-3 col-md-4">
-                        <label for="length" class="form-label">Length</label>
-                        <input type="number" class="form-control" name="length" placeholder="Enter Product Length" required >
-                        <div class="valid-feedback">Looks good!</div>
-                        <div class="invalid-feedback">Please Enter Product Length.</div>
-                    </div>
-                    <div class="mb-3 col-md-4">
-                        <label for="width" class="form-label">Width</label>
-                        <input type="number" class="form-control" name="width" placeholder="Enter Product Width" required >
-                        <div class="valid-feedback">Looks good!</div>
-                        <div class="invalid-feedback">Please enter product width.</div>
-                    </div>
-                    <div class="mb-3 col-md-4">
-                        <label for="depth" class="form-label">Depth</label>
-                        <input type="number" class="form-control" name="depth" placeholder="Enter Product Depth" required >
-                        <div class="valid-feedback">Looks good!</div>
-                        <div class="invalid-feedback">Please enter product Depth.</div>
-                    </div>
-                <div class="row g-2">
-                    <div class="mb-3 col-md-6">
-                        <label for="Images" class="form-label">Images</label>
-                        <input type="file" class="form-control" name="images[]" placeholder="Attach Images" required multiple>
-                        <div class="valid-feedback">Looks good!</div>
-                        <div class="invalid-feedback">Please attach product images.</div>
-                    </div>
-                    <div class="mb-3 col-md-4">
-                        <label for="category" class="form-label">Category</label>
-                        <select name="category" class="form-select" required>
-                            <option value="" selected>Choose...</option>
-                            <option value="livingroom">Living Room</option>
-                            <option value="dinning">Dining</option>
-                            <option value="bedroom">Bedroom</option>
-                            <option value="fabrics">Fabrics</option>
-                            <option value="others">Others</option>
-                        </select>
-                        <div class="valid-feedback">Looks good!</div>
-                        <div class="invalid-feedback">Please select a Category.</div>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="check1" required>
-                        <label class="form-check-label" for="check1">Check me out</label>
-                        <div class="invalid-feedback">You must agree before submitting.</div>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
-            </form>
-        </div>
-    </div>
-</div>
-
-                        
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header">Add Product</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Fill all fields and save to add a product</h5>
+                                    <form class="needs-validation" novalidate accept-charset="utf-8" enctype="multipart/form-data" action="addproduct.php" method="post">
+                                        <div class="row g-2">
+                                            <div class="mb-3 col-md-6">
+                                                <label for="name" class="form-label">Name</label>
+                                                <input type="text" class="form-control" name="name" placeholder="Product Name" required>
+                                                <small class="form-text text-muted">Enter product name.</small>
+                                                <div class="valid-feedback">Looks good!</div>
+                                                <div class="invalid-feedback">Please enter Product Name.</div>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label for="price" class="form-label">Price</label>
+                                                <input type="text" class="form-control" name="price" placeholder="Price" required>
+                                                <small class="form-text text-muted">Product Price.</small>
+                                                <div class="valid-feedback">Looks good!</div>
+                                                <div class="invalid-feedback">Please enter product price.</div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="description" class="form-label">Description</label>
+                                            <textarea class="form-control" name="description" placeholder="Product Description" required style="height: 100px;"></textarea>
+                                            <div class="valid-feedback">Looks good!</div>
+                                            <div class="invalid-feedback">Please enter product description.</div>
+                                        </div>
+                                        <div class="row g-2">
+                                            <div class="mb-3 col-md-4">
+                                                <label for="length" class="form-label">Length</label>
+                                                <input type="number" class="form-control" name="length" placeholder="Enter Product Length" required >
+                                                <div class="valid-feedback">Looks good!</div>
+                                                <div class="invalid-feedback">Please Enter Product Length.</div>
+                                            </div>
+                                            <div class="mb-3 col-md-4">
+                                                <label for="width" class="form-label">Width</label>
+                                                <input type="number" class="form-control" name="width" placeholder="Enter Product Width" required >
+                                                <div class="valid-feedback">Looks good!</div>
+                                                <div class="invalid-feedback">Please enter product width.</div>
+                                            </div>
+                                            <div class="mb-3 col-md-4">
+                                                <label for="depth" class="form-label">Depth</label>
+                                                <input type="number" class="form-control" name="depth" placeholder="Enter Product Depth" required >
+                                                <div class="valid-feedback">Looks good!</div>
+                                                <div class="invalid-feedback">Please enter product Depth.</div>
+                                            </div>
+                                        </div>
+                                        <div class="row g-2">
+                                            <div class="mb-3 col-md-6">
+                                                <label for="images" class="form-label">Images</label>
+                                                <input type="file" class="form-control" name="images[]" placeholder="Attach Images" required multiple>
+                                                <div class="valid-feedback">Looks good!</div>
+                                                <div class="invalid-feedback">Please attach product images.</div>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label for="category" class="form-label">Category</label>
+                                                <select name="category" class="form-select" required>
+                                                    <option value="" selected>Choose...</option>
+                                                    <option value="livingroom">Living Room</option>
+                                                    <option value="dinning">Dining</option>
+                                                    <option value="bedroom">Bedroom</option>
+                                                    <option value="fabrics">Fabrics</option>
+                                                    <option value="others">Others</option>
+                                                </select>
+                                                <div class="valid-feedback">Looks good!</div>
+                                                <div class="invalid-feedback">Please select a Category.</div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="check1" required>
+                                                <label class="form-check-label" for="check1">Check me out</label>
+                                                <div class="invalid-feedback">You must agree before submitting.</div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -241,3 +243,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </body>
 
 </html>
+

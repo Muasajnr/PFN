@@ -88,6 +88,28 @@ $conn->close();
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <!-- Favicon -->
+    <link href="admin/img/Asset 8.png" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+
 
     <style>
         .search-container {
@@ -123,6 +145,24 @@ $conn->close();
                 white-space: nowrap;
             }
         }
+        .navbar-collapse {
+                position: relative;
+            }
+
+            #wishlist-mobile {
+                display: block !important;
+                position: absolute;
+                bottom: 10px;
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media (min-width: 769px) {
+            #wishlist-mobile {
+                display: none;
+            }
+        }
     </style>
 </head>
 
@@ -143,13 +183,15 @@ $conn->close();
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto">
                         <a href="index.php" class="nav-item nav-link ">Home</a>
-                        <a href="livingroom.php" class="nav-item nav-link ">Living Room</a>
-                        <a href="dining.php" class="nav-item nav-link">Dining</a>
+                        <a href="livingroom.php" class="nav-item nav-link">Living Room</a>
+                        <a href="dining.php" class="nav-item nav-link">Dinning</a>
                         <a href="bedroom.php" class="nav-item nav-link">Bedroom</a>
                         <a href="fabrics.php" class="nav-item nav-link">Fabrics</a>
                         <a href="others.php" class="nav-item nav-link">Others</a>
+                        
                     </div>
-                    <a href="wishlist.php" class="btn btn-primary px-3 d-none d-lg-flex"><i class="bi bi-suit-heart-fill"></i>&nbsp; Wishlist</a>
+                    <a href="wishlist.php" id=" wishlist-mobile" class="btn btn-primary px-3 d-none d-lg-flex"><i class="bi bi-suit-heart-fill"></i>&nbsp; Wishlist</a>
+                   
                 </div>
             </nav>
         </div>
@@ -165,13 +207,14 @@ $conn->close();
                     <tr>
                         <th onclick="sortTable(0)">Product ID</th>
                         <th onclick="sortTable(1)">Name</th>
-                        <th onclick="sortTable(2)">Price</th>
-                        <th onclick="sortTable(3)">Description</th>
-                        <th onclick="sortTable(4)">Category</th>
-                        <th onclick="sortTable(5)">Length</th>
-                        <th onclick="sortTable(6)">Width</th>
-                        <th onclick="sortTable(7)">Depth</th>
-                        <th onclick="sortTable(8)">Timestamp</th>
+                        <th onclick="sortTable(2)">Images</th>
+                        <th onclick="sortTable(3)">Price</th>
+                        <th onclick="sortTable(4)">Description</th>
+                        <th onclick="sortTable(5)">Category</th>
+                        <th onclick="sortTable(6)">Length</th>
+                        <th onclick="sortTable(7)">Width</th>
+                        <th onclick="sortTable(8)">Depth</th>
+                        <th onclick="sortTable(9)">Timestamp</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -185,6 +228,17 @@ $conn->close();
                         ?>
                         <td><?php echo $count; ?></td>
                         <td><?php echo htmlspecialchars($item['name']); ?></td>
+                        <td>
+                                                   <?php 
+$images = json_decode($item['images'], true);
+if ($images) {
+    foreach ($images as $image) {
+        echo "<img style='max-height: 50px; width: auto;' src='admin/uploads/" . htmlspecialchars($image) . "' alt='ProductImage' />";
+    }
+}
+?>
+
+                                                </td>
                         <td><?php echo htmlspecialchars($item['price']); ?></td>
                         <td><?php echo htmlspecialchars($item['description']); ?></td>
                         <td><?php echo htmlspecialchars($item['category']); ?></td>
@@ -249,5 +303,14 @@ $conn->close();
         }
     </script>
 </body>
+<!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
 
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
 </html>

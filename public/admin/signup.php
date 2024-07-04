@@ -6,10 +6,10 @@ $error_message = ""; // Initialize error message variable
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Database connection settings
-    $servername = "localhost"; 
-    $username = "root"; 
-    $password = ""; 
-    $dbname = "pfn"; 
+   $servername = "sql207.byetcluster.com";
+    $username = "ezyro_36782018";
+    $password = "0346e325224e";
+    $dbname = "ezyro_36782018_pfn";
 
     // Create connection using PDO
     try {

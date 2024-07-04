@@ -177,6 +177,26 @@ logPageVisit($current_page, $device_id);
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
 </head>
+<style>
+.navbar-collapse {
+                position: relative;
+            }
+
+            .wishlist-mobile {
+                display: block !important;
+                position: absolute;
+                bottom: 10px;
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .wishlist-mobile {
+                display: none;
+            }
+        }
+</style>
 
 <body>
     <div class="container-xxl bg-white p-0">
@@ -204,14 +224,15 @@ logPageVisit($current_page, $device_id);
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto">
                         <a href="index.php" class="nav-item nav-link active">Home</a>
-                        <a href="livingRoom.php" class="nav-item nav-link">Living Room</a>
+                        <a href="livingroom.php" class="nav-item nav-link">Living Room</a>
                         <a href="dining.php" class="nav-item nav-link">Dinning</a>
-                        <a href="bedRoom.php" class="nav-item nav-link">Bedroom</a>
+                        <a href="bedroom.php" class="nav-item nav-link">Bedroom</a>
                         <a href="fabrics.php" class="nav-item nav-link">Fabrics</a>
                         <a href="others.php" class="nav-item nav-link">Others</a>
                         
                     </div>
                     <a href="wishlist.php" class="btn btn-primary px-3 d-none d-lg-flex"> <i class="bi bi-suit-heart-fill"></i> &nbsp; Wishlist </a>
+                    
                 </div>
             </nav>
         </div>
@@ -224,7 +245,7 @@ logPageVisit($current_page, $device_id);
                 <div class="col-md-6 p-5 mt-lg-5">
                     <h1 class="display-5 animated fadeIn mb-4">Find A <span class="text-primary">Perfect Home</span> To Enjoy With Your Family</h1>
                     <p class="animated fadeIn mb-4 pb-2">Welcome To The Paul's Furnitures.Here We Suit Your Taste.</p>
-                    <a href="" class="btn btn-primary py-3 px-5 me-3 animated fadeIn">Explore Our Brand</a>
+                    <a href="livingroom.php" class="btn btn-primary py-3 px-5 me-3 animated fadeIn">Explore Our Brand</a>
                 </div>
                 <div class="col-md-6 animated fadeIn">
                     <div class="owl-carousel header-carousel">
@@ -241,42 +262,76 @@ logPageVisit($current_page, $device_id);
         <!-- Header End -->
 
 
-        <!-- Search Start -->
-        <div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
-            <div class="container">
+       <!-- Search Start -->
+<div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
+    <div class="container">
+        <div class="row g-2">
+            <div class="col-md-10">
                 <div class="row g-2">
-                    <div class="col-md-10">
-                        <div class="row g-2">
-                            <div class="col-md-4">
-                                <input type="text" class="form-control border-0 py-3" placeholder="Search Keyword">
-                            </div>
-                            <div class="col-md-4">
-                                <select class="form-select border-0 py-3">
-                                    <option selected>Price</option>
-                                    <option value="1">0-10,000ksh</option>
-                                    <option value="2">10,000-50,000ksh</option>
-                                    <option value="3">Above 100,000ksh</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <select class="form-select border-0 py-3">
-                                    <option selected>Category</option>
-                                    <option value="1">Living Room</option>
-                                    <option value="2">Dinning</option>
-                                    <option value="3">Bedroom</option>
-                                    <option value="3">Others</option>
-                                </select>
-                            </div>
-                        </div>
+                    <div class="col-md-4">
+                        <input type="text" id="searchKeyword" class="form-control border-0 py-3" placeholder="Search Keyword">
                     </div>
-                    <div class="col-md-2">
-                        <button class="btn btn-dark border-0 w-100 py-3">Search</button>
+                    <div class="col-md-4">
+                        <select id="searchPrice" class="form-select border-0 py-3">
+                            <option selected>Price</option>
+                            <option value="1">0-10,000ksh</option>
+                            <option value="2">10,000-50,000ksh</option>
+                            <option value="3">Above 100,000ksh</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select id="searchCategory" class="form-select border-0 py-3">
+                            <option selected>Category</option>
+                            <option value="livingroom">Living Room</option>
+                            <option value="dining">Dining</option>
+                            <option value="bedroom">Bedroom</option>
+                            <option value="fabrics">Fabrics</option>
+                            <option value="others">Others</option>
+                        </select>
                     </div>
                 </div>
             </div>
+            <div class="col-md-2">
+                <button onclick="performSearch()" class="btn btn-dark border-0 w-100 py-3">Search</button>
+            </div>
         </div>
-        <!-- Search End -->
+    </div>
+</div>
+<!-- Search End -->
 
+<script>
+    function performSearch() {
+        const keyword = document.getElementById('searchKeyword').value.trim();
+        const price = document.getElementById('searchPrice').value;
+        const category = document.getElementById('searchCategory').value;
+
+        let url = '';
+
+        if (category === 'livingroom') {
+            url = 'livingroom.php';
+        } else if (category === 'dining') {
+            url = 'dining.php';
+        } else if (category === 'bedroom') {
+            url = 'bedroom.php';
+        } else if (category === 'others') {
+            url = 'others.php';
+        } else if (category === 'fabrics') {
+            url = 'fabrics.php';
+        }
+
+        if (url) {
+            if (keyword) {
+                url += '?keyword=' + encodeURIComponent(keyword);
+            }
+            if (price) {
+                url += (url.includes('?') ? '&' : '?') + 'price=' + encodeURIComponent(price);
+            }
+            window.location.href = url;
+        } else {
+            alert('Please select a category.');
+        }
+    }
+</script>
 
         
 
