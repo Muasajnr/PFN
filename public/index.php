@@ -211,7 +211,7 @@ logPageVisit($current_page, $device_id);
 
         <!-- Navbar Start -->
         <div class="container-fluid nav-bar bg-transparent">
-            <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
+            <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4 md-6">
                 <a href="index.php" class="navbar-brand d-flex align-items-center text-center">
                     <div class="icon  p-1 me-2">
                         <img class="img-fluid" src="img/Asset 8.png" alt="Icon" style="width: 60px; height: 60px;">
@@ -243,17 +243,17 @@ logPageVisit($current_page, $device_id);
         <div class="container-fluid header bg-white p-0">
             <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
                 <div class="col-md-6 p-5 mt-lg-5">
-                    <h1 class="display-5 animated fadeIn mb-4">Find A <span class="text-primary">Perfect Home</span> To Enjoy With Your Family</h1>
+                    <h1 class="display-5 animated fadeIn mb-4">Find A <span class="text-primary">Perfect Furniture</span> To Enjoy With Your Family</h1>
                     <p class="animated fadeIn mb-4 pb-2">Welcome To The Paul's Furnitures.Here We Suit Your Taste.</p>
                     <a href="livingroom.php" class="btn btn-primary py-3 px-5 me-3 animated fadeIn">Explore Our Brand</a>
                 </div>
                 <div class="col-md-6 animated fadeIn">
                     <div class="owl-carousel header-carousel">
                         <div class="owl-carousel-item">
-                            <img class="img-fluid" src="img/carousel-1.jpg" alt="">
+                            <img class="img-fluid" src="img/funny.jpg" alt="ra">
                         </div>
                         <div class="owl-carousel-item">
-                            <img class="img-fluid" src="img/carousel-2.jpg" alt="">
+                            <img class="img-fluid" src="img/funny2.jpg" alt="">
                         </div>
                     </div>
                 </div>

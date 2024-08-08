@@ -310,6 +310,7 @@ logPageVisit($current_page, $device_id);
                         <a class="btn btn-link text-white-50" href="bedRoom.php">Bedroom</a>
                         <a class="btn btn-link text-white-50" href="fabrics.php">Fabrics</a>
                         <a class="btn btn-link text-white-50" href="others.php">Others</a>
+                        <a class="btn btn-link text-white-50" href="wishlist.php">Wishlist</a>
                     </div>
                     <div class="col-lg-3 col-md-6">
                         <h5 class="text-white mb-4">Brand Gallery</h5>
