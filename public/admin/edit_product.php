@@ -113,10 +113,10 @@ $conn->close();
                 <label for="category" class="form-label">Category</label>
                 <select class="form-select" id="category" name="category" required>
                     <option value="Living Room" <?php if ($product['category'] === 'Living Room') echo 'selected'; ?>>Living Room</option>
-                    <option value="Dining" <?php if ($product['category'] === 'Dining') echo 'selected'; ?>>Dining</option>
-                    <option value="Bedroom" <?php if ($product['category'] === 'Bedroom') echo 'selected'; ?>>Bedroom</option>
-                    <option value="Fabrics" <?php if ($product['category'] === 'Fabrics') echo 'selected'; ?>>Fabrics</option>
-                    <option value="Others" <?php if ($product['category'] === 'Others') echo 'selected'; ?>>Others</option>
+                    <option value="dinning" <?php if ($product['category'] === 'dinning') echo 'selected'; ?>>Dining</option>
+                    <option value="bedroom" <?php if ($product['category'] === 'bedroom') echo 'selected'; ?>>Bedroom</option>
+                    <option value="fabrics" <?php if ($product['category'] === 'fabrics') echo 'selected'; ?>>Fabrics</option>
+                    <option value="others" <?php if ($product['category'] === 'others') echo 'selected'; ?>>Others</option>
                 </select>
             </div>
             <div class="mb-3">

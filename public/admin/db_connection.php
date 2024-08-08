@@ -1,9 +1,9 @@
 <?php
 // Database configuration
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "pfn";
+$servername = "sql207.byetcluster.com";
+$username = "ezyro_36782018";
+$password = "0346e325224e";
+$dbname = "ezyro_36782018_pfn";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
